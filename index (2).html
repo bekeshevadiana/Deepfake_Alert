@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="DEEPFAKE ALERT — AI media authenticity & literacy platform">
+<title>DEEPFAKE ALERT</title>
+<link rel="stylesheet" href="style.css">
+<!-- Libraries load from cdnjs; scripts are deferred and run in order -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script>
+<script defer src="script.js"></script>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<!-- ============ NAVIGATION ============ -->
+<header class="nav">
+  <a class="logo" href="#home"><i data-lucide="shield-alert"></i><span>DEEPFAKE ALERT</span></a>
+  <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu"><i data-lucide="menu"></i></button>
+  <nav id="menu" aria-label="Main">
+    <a href="#home" data-i18n="nav_home">Home</a>
+    <a href="#scanner" data-i18n="nav_scan">AI Scanner</a>
+    <a href="#how" data-i18n="nav_how">How It Works</a>
+    <a href="#learn" data-i18n="nav_learn">Learn</a>
+    <a href="#history" data-i18n="nav_hist">History</a>
+    <a href="#about" data-i18n="nav_about">About</a>
+  </nav>
+  <select id="lang" aria-label="Language">
+    <option value="en">English</option><option value="ru">Русский</option><option value="kk">Қазақша</option>
+  </select>
+  <a class="btn nav-cta" href="#scanner" data-i18n="start">Get Started</a>
+</header>
+
+<main>
+<!-- ============ HERO ============ -->
+<section id="home" class="wrap hero">
+  <div>
+    <h1 data-i18n="h1">SEE BEYOND WHAT YOU SEE.</h1>
+    <p class="lead" data-i18n="sub">Detect AI-generated content. Verify digital authenticity. Protect the truth.</p>
+    <div class="row">
+      <a class="btn" href="#scanner"><i data-lucide="scan-line"></i><span data-i18n="b_scan">Start Scanning</span></a>
+      <a class="btn ghost" href="#how"><i data-lucide="cpu"></i><span data-i18n="b_tech">Explore Technology</span></a>
+    </div>
+  </div>
+  <div class="face glass" aria-hidden="true">
+    <svg viewBox="0 0 300 300">
+      <circle cx="150" cy="150" r="135" class="ring"/><circle cx="150" cy="150" r="108" class="ring r2"/>
+      <path class="facepath" d="M150 55c-42 0-62 32-62 72 0 48 24 92 62 92s62-44 62-92c0-40-20-72-62-72z"/>
+      <g class="mesh"><path d="M100 120h100M104 150h92M115 185h70M150 60v158M120 80l30 60 30-60M110 130l40 55 40-55"/></g>
+      <g class="pts"><circle cx="122" cy="125" r="3"/><circle cx="178" cy="125" r="3"/><circle cx="150" cy="160" r="3"/><circle cx="132" cy="190" r="3"/><circle cx="168" cy="190" r="3"/></g>
+      <path class="brk" d="M40 70V40h30M230 40h30v30M260 230v30h-30M70 260H40v-30"/>
+      <rect class="scanline" x="40" y="0" width="220" height="3"/>
+    </svg>
+  </div>
+  <div class="stats">
+    <article class="glass stat"><i data-lucide="brain-circuit"></i><h3 data-i18n="st1">AI-generated content awareness</h3><p data-i18n="stn">Illustrative card — no real statistics.</p><span class="badge" data-i18n="badge">DEMO DATA</span></article>
+    <article class="glass stat"><i data-lucide="badge-check"></i><h3 data-i18n="st2">Media verification</h3><p data-i18n="stn">Illustrative card — no real statistics.</p><span class="badge" data-i18n="badge">DEMO DATA</span></article>
+    <article class="glass stat"><i data-lucide="lock-keyhole"></i><h3 data-i18n="st3">Digital safety</h3><p data-i18n="stn">Illustrative card — no real statistics.</p><span class="badge" data-i18n="badge">DEMO DATA</span></article>
+    <article class="glass stat"><i data-lucide="radar"></i><h3 data-i18n="st4">Threat detection</h3><p data-i18n="stn">Illustrative card — no real statistics.</p><span class="badge" data-i18n="badge">DEMO DATA</span></article>
+  </div>
+</section>
+
+<!-- ============ AI SCANNER ============ -->
+<section id="scanner" class="wrap">
+  <h2 data-i18n="sc_title">AI Scanner</h2>
+  <div class="tabs" role="tablist">
+    <button role="tab" class="tab on" data-type="image" aria-selected="true"><i data-lucide="image"></i><span data-i18n="t_image">Image Analysis</span></button>
+    <button role="tab" class="tab" data-type="video" aria-selected="false"><i data-lucide="video"></i><span data-i18n="t_video">Video Analysis</span></button>
+    <button role="tab" class="tab" data-type="audio" aria-selected="false"><i data-lucide="audio-lines"></i><span data-i18n="t_audio">Audio Analysis</span></button>
+  </div>
+  <div class="grid2">
+    <div class="glass pad">
+      <label class="drop" id="drop" for="file" tabindex="0">
+        <i data-lucide="upload-cloud"></i><b data-i18n="drop">Drop a file here or click to upload</b><small id="limits"></small>
+      </label>
+      <input type="file" id="file" hidden>
+      <div id="preview" class="preview" hidden></div>
+      <ul id="finfo" class="finfo"></ul>
+      <button class="btn" id="analyze" disabled><i data-lucide="scan-search"></i><span data-i18n="analyze">Analyze Content</span></button>
+      <div class="prog" id="prog" hidden><i></i></div>
+      <p id="progtxt" class="muted" aria-live="polite"></p>
+    </div>
+    <div class="glass pad" id="result">
+      <div id="empty" class="empty"><i data-lucide="file-search"></i><p data-i18n="res_empty">Results will appear here after analysis.</p></div>
+      <div id="rbody" hidden>
+        <p class="mode" id="rmode"></p>
+        <div class="gauge"><canvas id="gauge" aria-label="Probability"></canvas><b id="gval">—</b></div>
+        <dl>
+          <dt data-i18n="r_auth">Authenticity Assessment</dt><dd id="r1"></dd>
+          <dt data-i18n="r_prob">AI Manipulation Probability</dt><dd id="r2"></dd>
+          <dt data-i18n="r_conf">Confidence Level</dt><dd id="r3"></dd>
+        </dl>
+        <h4 data-i18n="r_ind">Detected Indicators</h4><ul id="rind"></ul>
+        <h4 data-i18n="r_sum">Analysis Summary</h4><p id="rsum"></p>
+        <h4 data-i18n="r_rec">Recommendations</h4><ul id="rrec"></ul>
+        <p class="note" data-i18n="limit_note">No detector is 100% accurate.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section id="how" class="wrap">
+  <h2 data-i18n="how_title">How It Works</h2>
+  <div class="grid3">
+    <div class="glass pad"><i data-lucide="file-up"></i><p data-i18n="s1"></p></div>
+    <div class="glass pad"><i data-lucide="cpu"></i><p data-i18n="s2"></p></div>
+    <div class="glass pad"><i data-lucide="file-check-2"></i><p data-i18n="s3"></p></div>
+  </div>
+</section>
+
+<!-- ============ EVIDENCE MAP ============ -->
+<section id="evidence" class="wrap">
+  <h2 data-i18n="ev_title">AI Evidence Map</h2>
+  <div class="glass pad">
+    <p class="badge warn" id="evbadge" data-i18n="sample">SAMPLE VISUALIZATION</p>
+    <div class="grid2">
+      <figure><canvas id="ev1" width="480" height="320"></canvas><figcaption data-i18n="ev_orig">Original Image</figcaption></figure>
+      <figure><canvas id="ev2" width="480" height="320"></canvas><figcaption data-i18n="ev_viz">Analysis Visualization</figcaption></figure>
+    </div>
+    <label class="row muted"><span data-i18n="opac">Mask opacity</span><input type="range" id="opac" min="0" max="100" value="45"></label>
+    <h4 data-i18n="ev_reg">Highlighted Regions</h4><ul id="evlist"></ul>
+    <h4 data-i18n="ev_expl">Explanation of Detected Patterns</h4><p data-i18n="ev_text"></p>
+  </div>
+</section>
+
+<!-- ============ REALITY CERTIFICATE ============ -->
+<section id="reality" class="wrap">
+  <h2 data-i18n="rc_title">Reality Certificate</h2>
+  <div class="glass pad">
+    <label class="btn" for="rcfile"><i data-lucide="fingerprint"></i><span data-i18n="rc_btn">Inspect file</span></label>
+    <input type="file" id="rcfile" hidden>
+    <div id="rcout" class="empty"><i data-lucide="file-question"></i><p data-i18n="rc_empty">Choose a file to inspect its provenance data.</p></div>
+    <p class="note" data-i18n="rc_note"></p>
+  </div>
+</section>
+
+<!-- ============ DEEPFAKE CHALLENGE ============ -->
+<section id="challenge" class="wrap">
+  <h2 data-i18n="ch_title">REAL OR FAKE?</h2>
+  <div class="glass pad" id="chbox">
+    <div class="prog solid"><i id="chbar"></i></div>
+    <p class="muted"><span id="chstep"></span> · <span data-i18n="score">Score</span>: <b id="chscore">0</b></p>
+    <div id="chq">
+      <div class="art" id="chart"></div>
+      <p id="chtxt" class="big"></p>
+      <div class="row"><button class="btn" id="chReal" data-i18n="real">Real</button><button class="btn ghost" id="chFake" data-i18n="fake">AI-generated</button></div>
+      <p id="chfb" class="fb" aria-live="polite"></p>
+      <button class="btn" id="chNext" hidden data-i18n="next">Next</button>
+    </div>
+    <div id="chend" hidden><p class="big"><span data-i18n="final">Final score</span>: <b id="chfinal"></b></p><button class="btn" id="chAgain" data-i18n="again">Play again</button></div>
+    <p class="note" data-i18n="ch_note"></p>
+  </div>
+</section>
+
+<!-- ============ LEARN ============ -->
+<section id="learn" class="wrap">
+  <h2 data-i18n="learn_title">Learn Center</h2>
+  <div class="grid3" id="learnGrid"></div>
+</section>
+
+<!-- ============ HISTORY ============ -->
+<section id="history" class="wrap">
+  <div class="row between"><h2 data-i18n="hist_title">History</h2><button class="btn ghost" id="clearHist"><i data-lucide="trash-2"></i><span data-i18n="clear">Clear history</span></button></div>
+  <div class="glass pad"><ul id="hist" class="hist"></ul><p class="note" data-i18n="hist_note"></p></div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="wrap">
+  <h2 data-i18n="about_title">About</h2>
+  <blockquote class="glass pad mission" data-i18n="mission">Making the digital world a safer place through artificial intelligence and media literacy.</blockquote>
+  <div class="grid2">
+    <article class="glass pad"><h3 data-i18n="m_h">Our Mission</h3><p data-i18n="m_t"></p></article>
+    <article class="glass pad"><h3 data-i18n="w_h">Why Deepfake Detection Matters</h3><p data-i18n="w_t"></p></article>
+    <article class="glass pad"><h3 data-i18n="tc_h">Our Technology</h3><p data-i18n="tc_t"></p></article>
+    <article class="glass pad"><h3 data-i18n="v_h">Our Vision</h3><p data-i18n="v_t"></p></article>
+  </div>
+</section>
+</main>
+
+<footer class="wrap foot muted" data-i18n="foot">DEEPFAKE ALERT · Educational project.</footer>
+
+<!-- Modal, toasts, back-to-top -->
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mtitle">
+  <div class="glass pad box"><button class="x" id="mclose" aria-label="Close"><i data-lucide="x"></i></button><h3 id="mtitle"></h3><p id="mbody"></p></div>
+</div>
+<div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+<button id="top" class="top" hidden aria-label="Back to top"><i data-lucide="arrow-up"></i></button>
+</body>
+</html>
